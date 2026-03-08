@@ -1,0 +1,33 @@
+version: '3'
+services:
+  directus:
+    image: directus/directus:10.x
+    ports:
+      - 8055:8055
+    environment:
+      KEY: 'your-secret-key'
+      SECRET: 'your-secret-secret'
+      DB_CLIENT: 'pg'
+      DB_HOST: 'postgres'
+      DB_PORT: '5432'
+      DB_DATABASE: 'viyafilms'
+      DB_USER: 'directus'
+      DB_PASSWORD: 'directus'
+      ADMIN_EMAIL: 'admin@viyafilms.com'
+      ADMIN_PASSWORD: 'admin123'
+      CORS_ENABLED: 'true'
+      CORS_ORIGIN: 'https://viyafilms.com'
+    volumes:
+      - ./uploads:/directus/uploads
+      - ./extensions:/directus/extensions
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: viyafilms
+      POSTGRES_USER: directus
+      POSTGRES_PASSWORD: directus
+    volumes:
+      - ./data:/var/lib/postgresql/data
